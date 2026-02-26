@@ -95,6 +95,25 @@ button {
   gap: 8px;
 }
 
+.heatmap-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heatmap-controls select {
+  border: 1px solid #4c8dff;
+  background: rgba(20, 28, 48, 0.45);
+  color: inherit;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.app.light .heatmap-controls select {
+  background: rgba(255, 255, 255, 0.8);
+}
+
 .heat-cell {
   height: 30px;
   border-radius: 8px;
