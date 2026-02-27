@@ -10,34 +10,6 @@ const colors = {
 
 export function HeatMap({ items }: { items: EpItem[] }) {
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<'status' | 'type' | 'building'>('status');
-
-  const statusOrder: EpItem['status'][] = ['План', 'В работе', 'Риск', 'Блокирован', 'Завершён'];
-  const typeOrder: EpItem['type'][] = ['Производственный', 'Управленческий', 'Финансовый'];
-
-  const getBuildingNumber = (item: EpItem) => {
-    const match = item.name.match(/Корпус\s+(\d+)/i);
-    return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
-  };
-
-  const sortedItems = useMemo(() => {
-    const byCode = (a: EpItem, b: EpItem) => a.code.localeCompare(b.code, 'ru');
-
-    return [...items].sort((a, b) => {
-      if (sortBy === 'status') {
-        const result = statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
-        return result !== 0 ? result : byCode(a, b);
-      }
-
-      if (sortBy === 'type') {
-        const result = typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type);
-        return result !== 0 ? result : byCode(a, b);
-      }
-
-      const result = getBuildingNumber(a) - getBuildingNumber(b);
-      return result !== 0 ? result : byCode(a, b);
-    });
-  }, [items, sortBy]);
 
   const selectedItem = useMemo(
     () => items.find((item) => item.code === selectedCode) ?? null,
@@ -74,16 +46,8 @@ export function HeatMap({ items }: { items: EpItem[] }) {
         <h2>Heat-map EP</h2>
         <span>{items.length} EP</span>
       </div>
-      <div className="heatmap-controls">
-        <label htmlFor="heatmap-sort">Сортировка:</label>
-        <select id="heatmap-sort" value={sortBy} onChange={(event) => setSortBy(event.target.value as typeof sortBy)}>
-          <option value="status">По статусу</option>
-          <option value="type">По типу</option>
-          <option value="building">По корпусам</option>
-        </select>
-      </div>
       <div className="heatmap-grid">
-        {sortedItems.map((item) => (
+        {items.map((item) => (
           <button
             key={item.code}
             type="button"
