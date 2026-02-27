@@ -36,7 +36,12 @@ export default function App() {
           <h2>AI-рекомендации</h2>
           <ul>
             {aiRecommendations.map((rec) => (
-              <li key={rec}>{rec}</li>
+              <li key={rec.issue.code}>
+                {rec.text}{' '}
+                <a href={rec.issue.url} target="_blank" rel="noreferrer">
+                  {rec.issue.code}
+                </a>
+              </li>
             ))}
           </ul>
         </section>
